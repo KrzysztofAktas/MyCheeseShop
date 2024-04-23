@@ -22,7 +22,7 @@ namespace MyCheeseShop.Model
 
         public void AddItem(Cheese cheese, int quantity)
         {
-            var item = _items.FirstOrDefault(item => ITempDataDictionary.Cheese.Id == cheese.Id);
+            var item = _items.FirstOrDefault(item => item.Cheese.Id == cheese.Id);
             if (item == null)
             {
                 _items.Add(new CartItem { Cheese = cheese, Quantity = quantity });
