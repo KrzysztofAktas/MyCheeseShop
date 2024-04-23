@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using MyCheeseShop.Model
+@inject ShoppingCart ShoppingCart
+
+
+<h3>StoreItem</h3>
+
+
+
+
+@code {
+    [Parameter]
+    public Cheese Cheese { get; set; }
+
+    private int quantity = 1;
+
+    public async Task AddToCart()
+    {
+        
+    }
+
+}

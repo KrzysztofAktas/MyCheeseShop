@@ -1,6 +1,66 @@
 ﻿@page "/"
+@using MyCheeseShop.Context
+@using MyCheeseShop.Model
+@inject CheeseProvider CheeseProvider
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+@if (cheeses is null)
+{
+    <p>Loading...</p>
+}
+else if (!cheeses.Any())
+{
+    <p>No cheeses found</p>
+}
 
+
+
+
+
+@foreach (var cheese in FilteredCheeses)
+{
+    <div class="col">
+        <StoreItem Cheese="cheese" />
+    </div>
+}
+@if (!FilteredCheeses.Any())
+{
+    <p>No cheeses found</p>
+}
+
+@code {
+    private IEnumerable<Cheese> cheeses;
+    private string searchTerm = "";
+
+
+    private IEnumerable<Cheese> filteredCheeses;
+    private IEnumerable<Cheese> FilteredCheeses
+    {
+        get
+        {
+            return filteredCheeses.Where(GetSearchCriteria);
+        }
+        set
+        {
+            filteredCheeses = value;
+        }
+    }
+
+    private bool GetSearchCriteria(Cheese cheese)
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm)) return true;
+
+        return cheese.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+            || cheese.Type.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+            || cheese.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+            || cheese.Strength.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        cheeses = await CheeseProvider.GetAllCheesesAsync();
+        filteredCheeses = cheeses;
+        ShoppingCart.OnCartUpdated += StateHasChanged;
+    }
+}
