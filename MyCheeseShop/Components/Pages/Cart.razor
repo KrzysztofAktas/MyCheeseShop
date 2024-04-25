@@ -1,0 +1,34 @@
+﻿@page "/cart"
+@using MyCheeseShop.Model
+@inject ShoppingCart ShoppingCart
+@inject NavigationManager NavigationManager
+
+
+
+<div class="d-flex justify-content-between">
+    <div>
+        <h3>Shopping Cart</h3>
+    </div>
+    <div>
+        <a @onclick="GoToCheckout" class="btn btn-outline-primary">💵 Checkout</a>
+    </div>
+</div>
+
+@code 
+{
+    protected override void OnInitialized()
+    {
+        ShoppingCart.OnCartUpdated += StateHasChanged;
+    }
+
+    private void GoToStore()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void GoToCheckout()
+    {
+        NavigationManager.NavigateTo("/checkout");
+    }
+
+}

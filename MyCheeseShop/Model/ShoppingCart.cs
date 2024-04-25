@@ -1,14 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Web.Virtualization;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using MyCheeseShop.Context;
-using System.Collections;
-using System.ComponentModel;
-using System.Threading.Tasks.Dataflow;
-
-
-namespace MyCheeseShop.Model
+﻿namespace MyCheeseShop.Model
 {
     public class ShoppingCart
     {
@@ -36,5 +26,13 @@ namespace MyCheeseShop.Model
         {
             return _items;
         }
+
+        public int Count()
+        {
+            // return the number of items in the cart
+            return _items.Count;
+        }
+
+
     }
 }
