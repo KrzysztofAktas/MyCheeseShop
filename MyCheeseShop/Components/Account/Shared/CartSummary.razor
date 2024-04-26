@@ -6,6 +6,9 @@
 
 <h3>CartSummary</h3>
 
+
+
+
 @code {
     [Parameter]
     public bool IsEditable { get; set; } = false;
@@ -35,5 +38,7 @@
     {
         ShoppingCart.RemoveItem(item.Cheese, 1);
     }
+
+    
 
 }

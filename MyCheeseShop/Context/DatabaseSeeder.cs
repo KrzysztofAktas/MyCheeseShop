@@ -43,6 +43,8 @@ namespace MyCheeseShop.Context
 
                 await _userManager.CreateAsync(admin, adminPassword);
                 await _userManager.AddToRoleAsync(admin, "Admin");
+
+
             }
             if (!_context.Cheeses.Any())
             {
