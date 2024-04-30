@@ -27,3 +27,9 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+
+
+body {
+    background-image: linear-gradient(to bottom right, #AE4407, #FFB300, #F7FF00, rgb(255, 122, 89));
+}

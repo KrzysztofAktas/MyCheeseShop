@@ -56,6 +56,12 @@
             return _items.Sum(item => item.Cheese.Price * item.Quantity);
         }
 
+        public int GetQuantity(Cheese cheese)
+        {
+            // return the quantity of the cheese in the cart
+            var item = _items.FirstOrDefault(item => item.Cheese.Id == cheese.Id);
+            return item?.Quantity ?? 0;
+        }
         public void SetItems(IEnumerable<CartItem> items)
         {
             // set the items in the cart
@@ -63,5 +69,11 @@
             OnCartUpdated?.Invoke();
         }
 
+        public void Clear()
+        {
+            // remove all items from the cart
+            _items.Clear();
+            OnCartUpdated?.Invoke();
+        }
     }
 }

@@ -8,35 +8,41 @@
 
 <PageTitle>Home</PageTitle>
 
-@if (cheeses is null)
-{
-    <p>Loading...</p>
-}
-else if (!cheeses.Any())
-{
-    <p>No cheeses found</p>
-}
 
 
-<div class="row row-cols-1 row-cols-md-4 g-4">
+<body>
 
-    @foreach (var cheese in FilteredCheeses)
+    @if (cheeses is null)
     {
-        <div class="col">
-            <StoreItem Cheese="cheese" />
-        </div>
+        <p>Loading...</p>
     }
-    @if (!FilteredCheeses.Any())
+    else if (!cheeses.Any())
     {
-        <p>🙁 No cheeses found</p>
+        <p>No cheeses found</p>
     }
-</div>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+
+        @foreach (var cheese in FilteredCheeses)
+        {
+            <div class="col">
+                <StoreItem Cheese="cheese" />
+            </div>
+        }
+        @if (!FilteredCheeses.Any())
+        {
+            <p>🙁 No cheeses found</p>
+        }
+    </div>
+
+
+
+</body>
 
 
 @code {
     private IEnumerable<Cheese> cheeses;
     private string searchTerm = "";
-    private SortCriteria sortCriteria = SortCriteria.Name;
 
 
     private IEnumerable<Cheese> filteredCheeses;
@@ -52,15 +58,6 @@ else if (!cheeses.Any())
         }
     }
 
-    private bool GetSearchCriteria(Cheese cheese)
-    {
-        if (string.IsNullOrWhiteSpace(searchTerm)) return true;
-
-        return cheese.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
-            || cheese.Type.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
-            || cheese.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
-            || cheese.Strength.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
-    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,25 +66,14 @@ else if (!cheeses.Any())
         ShoppingCart.OnCartUpdated += StateHasChanged;
     }
 
-    private void Sort(SortCriteria criteria)
+    private bool GetSearchCriteria(Cheese cheese)
     {
-        sortCriteria = criteria;
-        filteredCheeses = criteria switch
-        {
-            SortCriteria.Name => FilteredCheeses = filteredCheeses.OrderBy(c => c.Name),
-            SortCriteria.Price => FilteredCheeses = filteredCheeses.OrderBy(c => c.Price),
-            SortCriteria.Type => FilteredCheeses = filteredCheeses.OrderBy(c => c.Type),
-            SortCriteria.Strength => FilteredCheeses = filteredCheeses.OrderBy(c => c.Strength),
-            _ => filteredCheeses
-        };
-    }
+        if (string.IsNullOrWhiteSpace(searchTerm)) return true;
 
-    private enum SortCriteria
-    {
-        Name,
-        Price,
-        Type,
-        Strength
+        return cheese.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+            || cheese.Type.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+            || cheese.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+            || cheese.Strength.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
     }
 
     private void GoToCart()
