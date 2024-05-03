@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
+@using MyCheeseShop.Model
 @inherits LayoutComponentBase
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -50,26 +51,27 @@
                 </AuthorizeView>
             </ul>
 
-
             <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
                 <AuthorizeView>
                     <Authorized>
-                        <AuthorizeView Roles="Admin" Context="innerContext"> Admin </AuthorizeView>
-                        <li class="navbar-text"> @context.User.Identity?.Name </li>
+                        <span class="navbar-text me-3">
+                            Welcome, !
+                        </span>
                         <li class="nav-item">
-                            <NavLink class="nav-link" href="/Account/Logout" Match="NavLinkMatch.All">Logout</NavLink>
+                            <NavLink class="btn btn-outline-danger" href="/Account/Logout" Match="NavLinkMatch.All">Logout</NavLink>
                         </li>
                     </Authorized>
                     <NotAuthorized>
-                        <li class="nav-item">
-                            <NavLink class="nav-link" href="/Account/Login" Match="NavLinkMatch.Prefix">Login</NavLink>
+                        <li class="nav-item me-1">
+                            <NavLink class="btn btn-outline-primary" href="Account/Login" Match="NavLinkMatch.Prefix">Login</NavLink>
                         </li>
-                        <li class="nav-item">
-                            <NavLink class="nav-link" href="/Account/Register" Match="NavLinkMatch.Prefix">Register</NavLink>
+                        <li class="nav-item me-1 mt-md-0">
+                            <NavLink class="btn btn-outline-success" href="Account/Register" Match="NavLinkMatch.Prefix">Register</NavLink>
                         </li>
                     </NotAuthorized>
                 </AuthorizeView>
             </ul>
+            
         </div>
     </div>
 </nav>

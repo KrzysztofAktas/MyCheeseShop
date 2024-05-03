@@ -31,5 +31,7 @@ h1:focus {
 
 
 body {
-    background-image: linear-gradient(to bottom right, #AE4407, #FFB300, #F7FF00, rgb(255, 122, 89));
+    background: rgb(255,209,0);
+    background: linear-gradient(130deg, rgba(255,209,0,1) 30%, rgba(254,193,99,0.8236658932714618) 70%);
 }
+
