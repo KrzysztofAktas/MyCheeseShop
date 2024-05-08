@@ -1,5 +1,6 @@
 ﻿@page "/cart"
 @using MyCheeseShop.Components.Account.Shared
+@using MyCheeseShop.Components.Shared
 @using MyCheeseShop.Model
 @inject ShoppingCart ShoppingCart
 @inject NavigationManager NavigationManager
@@ -20,10 +21,10 @@ else
         <h3>Shopping Cart</h3>
     </div>
     <div>
+        <CartSummary IsEditable="true" />
         <a @onclick="GoToCheckout" class="btn btn-light btn-outline-primary">💵 Checkout</a>
     </div>
 
-    <CartSummary IsEditable="true"/>
 </div>
 }
 
