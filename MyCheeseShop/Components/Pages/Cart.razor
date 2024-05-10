@@ -11,18 +11,16 @@
     <h3>Shopping Cart</h3>
     <p>Cart is empty</p>
     <div>
-        <button @onclick="GoToStore" class="btn btn-light btn-outline-primary">🧀 Back to cheeses</button>
+        <button @onclick="GoToStore" class="btn btn-light btn-outline-dark">🧀 Back to cheeses</button>
     </div>
 }
 else
 {
-<div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-center">
     <div>
-        <h3>Shopping Cart</h3>
-    </div>
-    <div>
+            <h3>Shopping Cart</h3>
         <CartSummary IsEditable="true" />
-        <a @onclick="GoToCheckout" class="btn btn-light btn-outline-primary">💵 Checkout</a>
+            <a @onclick="GoToCheckout" class="btn btn-light btn-outline-dark">💵 Checkout</a>
     </div>
 
 </div>

@@ -1,4 +1,4 @@
-h1:focus {
+﻿h1:focus {
     outline: none;
 }
 
@@ -28,10 +28,7 @@ h1:focus {
     border-color: #929292;
 }
 
-
-
 body {
-    background: rgb(255,209,0);
-    background: linear-gradient(130deg, rgba(255,209,0,1) 30%, rgba(254,193,99,0.8236658932714618) 70%);
+
 }
 
