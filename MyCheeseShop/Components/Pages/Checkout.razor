@@ -17,6 +17,10 @@
 <PageTitle>Checkout - EasyBriezy</PageTitle>
 
 
+
+
+
+
 <div class="row row-cols-1 row-cols-md-4 g-4" style="margin-bottom: 20px;">
     @foreach (var item in ShoppingCart.GetItems())
     {
@@ -43,9 +47,64 @@
 
 
 
+<div class="row" style="margin-bottom: 30px;">
+    <div class="col-md-3">
+        <div class="card" style="height : 20rem; justify-content:center;">
+            <div class="card-header">
+                <h4>Delivery Details</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Name: </strong> @user.FirstName @user.LastName</li>
+                <li class="list-group-item"><strong>Address: </strong> @user.Address</li>
+                <li class="list-group-item"><strong>City: </strong> @user.City</li>
+                <li class="list-group-item"><strong>Postcode: </strong> @user.PostCode</li>
+            </ul>
+            <div class="card-footer">
+                <strong>Estimated Delivery Time: </strong> 2-3 Days
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="card" style="height : 10rem;">
+            <div class="card-body bg-light">
+                <h4 class="card-title" style="text-align:center;">Payment Details --- Order Total: @(ShoppingCart.Total().ToString("C")) </h4>
+                <EditForm OnValidSubmit="MakePayment" Model="paymentDetails" FormName="paymentdetails">
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label for="name" class="form-label">Name On Card</label>
+                            <InputText class="form-control" placeholder="Name On Card" @bind-Value="paymentDetails.NameOnCard" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cardnumber" class="form-label">Card Number</label>
+                            <InputText type="cardnumber" class="form-control" placeholder="CardNumber" @bind-Value="paymentDetails.CardNumber" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="expirydate" class="form-label">Expiry Date</label>
+                            <InputText type="expirydate" class="form-control" placeholder="Expiry Date" @bind-Value="paymentDetails.ExpiryDate" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="securitycode" class="form-label">Security Code</label>
+                            <InputText type="securitycode" class="form-control" placeholder="Security Code" @bind-Value="paymentDetails.SecurityCode" />
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-outline-primary w-100">🔑Make Payment</button>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 
 @code {
 
+    private decimal total;
     private User user;
     private PaymentDetails paymentDetails;
     private EditContext editContext;
@@ -59,6 +118,7 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var username = authState!.User!.Identity!.Name!;
         user = UserProvider.GetUserByUsername(username)!;
+        var items = ShoppingCart.GetItems();
     }
 
     private async Task MakePayment()
@@ -75,7 +135,7 @@
         isPaying = true;
         StateHasChanged();
 
-        await Task.Delay(2000);
+        await Task.Delay(500);
 
         isPaying = false;
         StateHasChanged();
@@ -85,6 +145,27 @@
     {
         NavigationManager.NavigateTo("/cart");
     }
+
+
+    private sealed class PaymentDetails
+    {
+        [Required(ErrorMessage = "Please provide the name on the card.")]
+        public string NameOnCard { get; set; }
+
+        [Required(ErrorMessage = "Please provide the card number.")]
+        [CreditCard(ErrorMessage = "Invalid card number.")]
+        public string CardNumber { get; set; }
+
+        [Required(ErrorMessage = "Please provide the expiry date.")]
+        [RegularExpression(@"^(0[1-9]|1[0-2])\/\d{2}$", ErrorMessage = "Invalid expiry date. Use MM/YY format.")]
+        public string ExpiryDate { get; set; }
+
+        [Required(ErrorMessage = "Please provide the security code.")]
+        [RegularExpression(@"^\d{3,4}$", ErrorMessage = "Invalid security code.")]
+        public string SecurityCode { get; set; }
+    }
+
+
 
     private string GetFormattedName(User user)
     {
@@ -96,18 +177,26 @@
         return $"{user.Address}{Environment.NewLine}{user.City}{Environment.NewLine}{user.PostCode}";
     }
 
-    private sealed class PaymentDetails
+
+
+    public string GetStrengthBadgeColor(string strength)
     {
-        [Required]
-        public string NameOnCard { get; set; }
-
-        [Required]
-        public string CardNumber { get; set; }
-
-        [Required]
-        public string ExpiryDate { get; set; }
-
-        [Required]
-        public string SecurityCode { get; set; }
+        switch (strength.ToLower())
+        {
+            case "medium":
+                return "badge bg-warning text-dark";
+            case "mild":
+                return "badge bg-success";
+            case "strong":
+                return "badge bg-danger";
+            default:
+                return "badge bg-primary";
+        }
     }
- }
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        StateHasChanged();
+    }
+}
