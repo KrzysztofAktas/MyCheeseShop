@@ -22,6 +22,9 @@
         <tbody>
             @foreach (var item in ShoppingCart.GetItems())
             {
+            <div class="col">
+                <img src="/database/@item.Cheese.ImageUrl" />
+            </div>
                 <tr>
                     <td scope="col">@item.Cheese.Name</td>
                     <td scope="col">@item.Cheese.Price.ToString("C")</td>

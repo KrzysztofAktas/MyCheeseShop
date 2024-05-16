@@ -43,56 +43,6 @@
 
 
 
-<div class="row" style="margin-bottom: 30px;">
-    <div class="col-md-3">
-        <div class="card" style="height : 20rem; justify-content:center;">
-            <div class="card-header">
-                <h4>Delivery Details</h4>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>Name: </strong> @user.FirstName @user.LastName</li>
-                <li class="list-group-item"><strong>Address: </strong> @user.Address</li>
-                <li class="list-group-item"><strong>City: </strong> @user.City</li>
-                <li class="list-group-item"><strong>Postcode: </strong> @user.PostCode</li>
-            </ul>
-            <div class="card-footer">
-                <strong>Estimated Delivery Time: </strong> 2-3 Days
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-9">
-        <div class="card" style="height : 10rem;">
-            <div class="card-body bg-light">
-                <h4 class="card-title" style="text-align:center;">Payment Details --- Order Total: @(ShoppingCart.Total().ToString("C")) </h4>
-                <EditForm OnValidSubmit="MakePayment" Model="paymentDetails" FormName="paymentdetails">
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <label for="name" class="form-label">Name On Card</label>
-                            <InputText class="form-control" placeholder="Name On Card" @bind-Value="paymentDetails.NameOnCard" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="cardnumber" class="form-label">Card Number</label>
-                            <InputText type="cardnumber" class="form-control" placeholder="CardNumber" @bind-Value="paymentDetails.CardNumber" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="expirydate" class="form-label">Expiry Date</label>
-                            <InputText type="expirydate" class="form-control" placeholder="Expiry Date" @bind-Value="paymentDetails.ExpiryDate" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="securitycode" class="form-label">Security Code</label>
-                            <InputText type="securitycode" class="form-control" placeholder="Security Code" @bind-Value="paymentDetails.SecurityCode" />
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-outline-primary w-100">🔑Make Payment</button>
-                        </div>
-                    </div>
-                </EditForm>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 @code {
 
