@@ -12,90 +12,89 @@
 @inject ShoppingCart ShoppingCart
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
+@inject CheeseProvider CheeseProvider
 @inject ProtectedSessionStorage ProtectedSessionStore
 
 <PageTitle>Checkout - EasyBriezy</PageTitle>
 
-
-
-
-
-
-<div class="row row-cols-1 row-cols-md-4 g-4" style="margin-bottom: 20px;">
-    @foreach (var item in ShoppingCart.GetItems())
-    {
-        <div class="col">
-            <div class="card h-100">
-                <img src="/img/cheeses/@item.Cheese.ImageUrl" class="card-img-top p-1" alt="@item.Cheese.Name" onerror="this.onerror = null; this.src='/img/no_cheese.png'">
-                <div class="card-body d-flex flex-column">
-                    <div class="d-flex flex-column flex-sm-row justify-content-between">
+<!-- Shopping Cart Items -->
+<div class="container my-5">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in ShoppingCart.GetItems())
+        {
+            <div class="col">
+                <div class="card border-dark h-100 border-0 shadow">
+                    <!-- Product Image -->
+                    <img src="@item.Cheese.ImageUrl" class="card-img-top" alt="@item.Cheese.Name" style="object-fit: cover;">
+                    <!-- Card Body -->
+                    <div class="card-body text-center">
                         <h5 class="card-title">@item.Cheese.Name</h5>
-                        <br />
+                        <p class="card-text">
+                            <span class="badge bg-warning text-dark">@item.Cheese.Price.ToString("C")</span>
+                            <span class="badge bg-info">@item.Quantity.ToString("0.# kg")</span>
+                            <span class="badge bg-success">@item.Total.ToString("C")</span>
+                        </p>
                     </div>
-                    <h6><strong style=" margin: 20px;">Price:   </strong><span class="badge bg-danger">@item.Cheese.Price.ToString("C")</span></h6>
-                    <h6><strong style=" margin: 20px;">Quantity:   </strong><span class="badge bg-success">@(item.Quantity * 100)g</span></h6>
-                    <h6><strong style=" margin: 20px;">Total:   </strong><span class="badge bg-primary">@item.Total.ToString("C")</span></h6>
-                    <div class="mt-auto"></div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Delivery and Payment Details -->
+<div class="container my-5">
+    <div class="row">
+        <!-- Delivery Details -->
+        <div class="col-md-4 mb-3">
+            <div class="card border-dark h-100 shadow">
+                <div class="card-header bg-dark text-white text-center">
+                    <h4>Delivery Details</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Name:</strong> @user.FirstName</li>
+                    <li class="list-group-item"><strong>Address:</strong> @user.Address</li>
+                    <li class="list-group-item"><strong>City:</strong> @user.City</li>
+                    <li class="list-group-item"><strong>Postcode:</strong> @user.PostCode</li>
+                </ul>
+                <div class="card-footer bg-dark text-white text-center">
+                    <strong>Estimated Delivery:</strong> 2-3 Days
                 </div>
             </div>
         </div>
-    }
-</div>
-
-
-
-
-
-
-<div class="row" style="margin-bottom: 30px;">
-    <div class="col-md-3">
-        <div class="card" style="height : 20rem; justify-content:center;">
-            <div class="card-header">
-                <h4>Delivery Details</h4>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>Name: </strong> @user.FirstName @user.LastName</li>
-                <li class="list-group-item"><strong>Address: </strong> @user.Address</li>
-                <li class="list-group-item"><strong>City: </strong> @user.City</li>
-                <li class="list-group-item"><strong>Postcode: </strong> @user.PostCode</li>
-            </ul>
-            <div class="card-footer">
-                <strong>Estimated Delivery Time: </strong> 2-3 Days
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-9">
-        <div class="card" style="height : 10rem;">
-            <div class="card-body bg-light">
-                <h4 class="card-title" style="text-align:center;">Payment Details --- Order Total: @(ShoppingCart.Total().ToString("C")) </h4>
-                <EditForm OnValidSubmit="MakePayment" Model="paymentDetails" FormName="paymentdetails">
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <label for="name" class="form-label">Name On Card</label>
-                            <InputText class="form-control" placeholder="Name On Card" @bind-Value="paymentDetails.NameOnCard" />
+        <!-- Payment Details -->
+        <div class="col-md-8">
+            <div class="card border-dark h-100 shadow">
+                <div class="card-body">
+                    <h4 class="text-center mb-4">Payment Details</h4>
+                    <EditForm OnValidSubmit="MakePayment" Model="paymentDetails">
+                        <div class="row g-3">
+                            <div class="col-md-12 mb-3">
+                                <label for="name" class="form-label">Name On Card</label>
+                                <InputText class="form-control" placeholder="Name On Card" @bind-Value="paymentDetails.NameOnCard" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cardnumber" class="form-label">Card Number</label>
+                                <InputText type="cardnumber" class="form-control" placeholder="Card Number" @bind-Value="paymentDetails.CardNumber" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="expirydate" class="form-label">Expiry Date</label>
+                                <InputText type="expirydate" class="form-control" placeholder="MM/YY" @bind-Value="paymentDetails.ExpiryDate" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="securitycode" class="form-label">Security Code</label>
+                                <InputText type="securitycode" class="form-control" placeholder="CVV" @bind-Value="paymentDetails.SecurityCode" />
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-light btn-outline-dark w-100">Make Payment</button>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="cardnumber" class="form-label">Card Number</label>
-                            <InputText type="cardnumber" class="form-control" placeholder="CardNumber" @bind-Value="paymentDetails.CardNumber" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="expirydate" class="form-label">Expiry Date</label>
-                            <InputText type="expirydate" class="form-control" placeholder="Expiry Date" @bind-Value="paymentDetails.ExpiryDate" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="securitycode" class="form-label">Security Code</label>
-                            <InputText type="securitycode" class="form-control" placeholder="Security Code" @bind-Value="paymentDetails.SecurityCode" />
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-outline-primary w-100">🔑Make Payment</button>
-                        </div>
-                    </div>
-                </EditForm>
+                    </EditForm>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 
 
@@ -179,20 +178,7 @@
 
 
 
-    public string GetStrengthBadgeColor(string strength)
-    {
-        switch (strength.ToLower())
-        {
-            case "medium":
-                return "badge bg-warning text-dark";
-            case "mild":
-                return "badge bg-success";
-            case "strong":
-                return "badge bg-danger";
-            default:
-                return "badge bg-primary";
-        }
-    }
+    
 
 
     protected override void OnAfterRender(bool firstRender)

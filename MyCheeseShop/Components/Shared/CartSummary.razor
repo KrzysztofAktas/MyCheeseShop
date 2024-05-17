@@ -4,10 +4,9 @@
 @inject NavigationManager NavigationManager
 @inject ProtectedSessionStorage ProtectedSessionStore
 
-
-<div>
-    <table class="table">
-        <thead>
+<div class="container mt-4">
+    <table class="table table-hover">
+        <thead class="thead-dark">
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Price</th>
@@ -22,20 +21,20 @@
         <tbody>
             @foreach (var item in ShoppingCart.GetItems())
             {
-            <div class="col">
-                <img src="/database/@item.Cheese.ImageUrl" />
-            </div>
                 <tr>
-                    <td scope="col">@item.Cheese.Name</td>
-                    <td scope="col">@item.Cheese.Price.ToString("C")</td>
-                    <td scope="col">@(item.Quantity * 100)g</td>
-                    <td scope="col">@item.Total.ToString("C")</td>
+                    <td>
+                        <img src="@item.Cheese.ImageUrl" class="img-thumbnail" alt="@item.Cheese.Name" />
+                        @item.Cheese.Name
+                    </td>
+                    <td>@item.Cheese.Price.ToString("C")</td>
+                    <td>@(item.Quantity * 100)g</td>
+                    <td>@item.Total.ToString("C")</td>
                     @if (IsEditable)
                     {
-                        <td scope="col">
-                            <button class="btn btn-outline-success mt-1 mt-md-0" @onclick="() => IncreaseQuantity(item)">➕</button>
-                            <button class="btn btn-outline-primary mt-1 mt-md-0" @onclick="() => DecreaseQuantity(item)">➖</button>
-                            <button class="btn btn-outline-danger mt-1 mt-md-0" @onclick="() => RemoveItem(item)">🗑</button>
+                        <td>
+                            <button class="btn btn-success" @onclick="() => IncreaseQuantity(item)">+</button>
+                            <button class="btn btn-info" @onclick="() => DecreaseQuantity(item)">-</button>
+                            <button class="btn btn-danger" @onclick="() => RemoveItem(item)">x</button>
                         </td>
                     }
                 </tr>
@@ -43,14 +42,11 @@
         </tbody>
     </table>
 </div>
-<div class="d-flex justify-content-between">
-    <div>
-        <button @onclick="GoToStore" class="btn btn-light btn-outline-dark ">🧀 Back to cheeses</button>
-    </div>
-    <div>
-        <h4>Total: @(ShoppingCart.Total().ToString("C"))</h4>
-    </div>
+<div class="d-flex justify-content-between align-items-center mt-4">
+    <button @onclick="GoToStore" class="btn btn-light btn-outline-dark">🧀 Back to cheeses</button>
+    <h4 class="mb-0">Total: @(ShoppingCart.Total().ToString("C"))</h4>
 </div>
+
 
 
 
