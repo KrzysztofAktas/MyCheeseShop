@@ -33,7 +33,10 @@
                             </InputSelect>
                         </div>
                         <div class="col-lg-6 col-12 mt-lg-0 mt-1">
-                            <button class="button">
+                            <button>
+                                <span class="shadow"></span>
+                                <span class="edge"></span>
+                                <span class="front text">
                                 Add to cart
                                 @if (ShoppingCart.GetQuantity(Cheese) > 0)
                                 {
@@ -42,6 +45,7 @@
                                         <span class="visually-hidden">@Cheese.Name in shopping cart</span>
                                     </span>
                                 }
+                                </span>
                             </button>
                         </div>
                     </div>
